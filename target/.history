@@ -1,0 +1,10 @@
+run
+help
+run
+version
+run
+sbt
+sbt install
+run
+exit
+run

@@ -1,0 +1,53 @@
+2016-08-31 01:46:59,882 - [INFO] - from play in main 
+Listening for HTTP on /0:0:0:0:0:0:0:0:9000
+
+2016-08-31 01:48:35,788 - [ERROR] - from net.sf.ehcache.Cache in play-internal-execution-context-1 
+Unable to set localhost. This prevents creation of a GUID. Cause was: odd-vps2: odd-vps2: Name or service not known
+java.net.UnknownHostException: odd-vps2: odd-vps2: Name or service not known
+	at java.net.InetAddress.getLocalHost(InetAddress.java:1475) ~[na:1.7.0_80]
+	at net.sf.ehcache.Cache.<clinit>(Cache.java:214) ~[ehcache-core.jar:na]
+	at net.sf.ehcache.config.ConfigurationHelper.createCache(ConfigurationHelper.java:296) [ehcache-core.jar:na]
+	at net.sf.ehcache.config.ConfigurationHelper.createDefaultCache(ConfigurationHelper.java:219) [ehcache-core.jar:na]
+	at net.sf.ehcache.CacheManager.configure(CacheManager.java:714) [ehcache-core.jar:na]
+	at net.sf.ehcache.CacheManager.doInit(CacheManager.java:431) [ehcache-core.jar:na]
+	at net.sf.ehcache.CacheManager.init(CacheManager.java:374) [ehcache-core.jar:na]
+	at net.sf.ehcache.CacheManager.<init>(CacheManager.java:259) [ehcache-core.jar:na]
+	at net.sf.ehcache.CacheManager.newInstance(CacheManager.java:1029) [ehcache-core.jar:na]
+	at net.sf.ehcache.CacheManager.newInstance(CacheManager.java:928) [ehcache-core.jar:na]
+	at net.sf.ehcache.CacheManager.create(CacheManager.java:896) [ehcache-core.jar:na]
+	at play.api.cache.EhCachePlugin.x$1$lzycompute(Cache.scala:123) [play_2.10.jar:2.1.5]
+	at play.api.cache.EhCachePlugin.x$1(Cache.scala:120) [play_2.10.jar:2.1.5]
+	at play.api.cache.EhCachePlugin.cache$lzycompute(Cache.scala:120) [play_2.10.jar:2.1.5]
+	at play.api.cache.EhCachePlugin.cache(Cache.scala:120) [play_2.10.jar:2.1.5]
+	at play.api.cache.EhCachePlugin.onStart(Cache.scala:140) [play_2.10.jar:2.1.5]
+	at play.api.Play$$anonfun$start$1$$anonfun$apply$mcV$sp$1.apply(Play.scala:84) [play_2.10.jar:2.1.5]
+	at play.api.Play$$anonfun$start$1$$anonfun$apply$mcV$sp$1.apply(Play.scala:84) [play_2.10.jar:2.1.5]
+	at scala.collection.immutable.List.foreach(List.scala:309) [scala-library.jar:na]
+	at play.api.Play$$anonfun$start$1.apply$mcV$sp(Play.scala:84) [play_2.10.jar:2.1.5]
+	at play.api.Play$$anonfun$start$1.apply(Play.scala:84) [play_2.10.jar:2.1.5]
+	at play.api.Play$$anonfun$start$1.apply(Play.scala:84) [play_2.10.jar:2.1.5]
+	at play.utils.Threads$.withContextClassLoader(Threads.scala:18) [play_2.10.jar:2.1.5]
+	at play.api.Play$.start(Play.scala:83) [play_2.10.jar:2.1.5]
+	at play.core.ReloadableApplication$$anonfun$get$1$$anonfun$apply$1$$anonfun$1.apply(ApplicationProvider.scala:141) [play_2.10.jar:2.1.5]
+	at play.core.ReloadableApplication$$anonfun$get$1$$anonfun$apply$1$$anonfun$1.apply(ApplicationProvider.scala:114) [play_2.10.jar:2.1.5]
+	at scala.Option.map(Option.scala:145) [scala-library.jar:na]
+	at play.core.ReloadableApplication$$anonfun$get$1$$anonfun$apply$1.apply(ApplicationProvider.scala:114) [play_2.10.jar:2.1.5]
+	at play.core.ReloadableApplication$$anonfun$get$1$$anonfun$apply$1.apply(ApplicationProvider.scala:112) [play_2.10.jar:2.1.5]
+	at scala.util.Either$RightProjection.flatMap(Either.scala:523) [scala-library.jar:na]
+	at play.core.ReloadableApplication$$anonfun$get$1.apply(ApplicationProvider.scala:112) [play_2.10.jar:2.1.5]
+	at play.core.ReloadableApplication$$anonfun$get$1.apply(ApplicationProvider.scala:104) [play_2.10.jar:2.1.5]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24) [scala-library.jar:na]
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24) [scala-library.jar:na]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145) [na:1.7.0_80]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615) [na:1.7.0_80]
+	at java.lang.Thread.run(Thread.java:745) [na:1.7.0_80]
+Caused by: java.net.UnknownHostException: odd-vps2: Name or service not known
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method) ~[na:1.7.0_80]
+	at java.net.InetAddress$1.lookupAllHostAddr(InetAddress.java:901) ~[na:1.7.0_80]
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1295) ~[na:1.7.0_80]
+	at java.net.InetAddress.getLocalHost(InetAddress.java:1471) ~[na:1.7.0_80]
+	... 36 common frames omitted
+
+2016-08-31 01:48:35,899 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
