@@ -22,11 +22,8 @@ object TwitterController extends Controller {
     val consumerSecret = "oGy5pKh2Ay2jAaouei8wh6p8lDd3hJYYhd0BTa0sb2LZLRO40F"
     // Twitterオブジェクトの初期化
     val twitter: Twitter = (new TwitterFactory()).getInstance()
-    println("http://vps2.o625.com/twitterOAuthCallback")
     // RequestTokenの取得
-
     twitter.setOAuthConsumer(consumerKey, consumerSecret)
-    
     val requestToken: RequestToken = twitter.getOAuthRequestToken("http://vps2.o625.com/twitterOAuthCallback")
 
     // TwitterとRequestTokenのオブジェクトをCacheに格納(2分有効)

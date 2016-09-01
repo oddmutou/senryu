@@ -14,6 +14,7 @@ import twitter4j.conf._
 import scala.collection.JavaConverters._
 import scala.collection.JavaConversions._
 import org.atilika.kuromoji.Tokenizer
+import org.atilika.kuromoji.Token
 
 object Application extends Controller {
   
@@ -21,57 +22,64 @@ object Application extends Controller {
     val getTwitter : Option[Twitter] = Cache.getAs[Twitter]("twitter_obj")
     getTwitter match {
       case Some(twitter) => {
-        val gsRetweets = getTimeline(twitter)
-        tweetAnalysis(gsRetweets)
-        Ok(views.html.index("success!"))
+        val results : List[String] = generateSongs(twitter, 5)
+        Ok(views.html.index(results))
       }
       case _ => {
         Ok(views.html.login("Login"))
       }
     }
-    
-
   }
 
-
-
-  def getTimeline(getTwitter : Twitter): ResponseList[twitter4j.Status] = {
-    val cb = new twitter4j.conf.ConfigurationBuilder
-    // GSのAPIキー
-    cb.setOAuthConsumerKey("e7yWV3wglOOwZVSH74paJvrfl")//キーは自分で取得してください
-      .setOAuthConsumerSecret("oGy5pKh2Ay2jAaouei8wh6p8lDd3hJYYhd0BTa0sb2LZLRO40F")//キーは自分で取得してください
-      .setOAuthAccessToken("127681532-4y8sY9ecGBXPwcgZ7pearohHr3EfZwB5mNgiqoHA")//キーは自分で取得してください
-      .setOAuthAccessTokenSecret("pd7xLhGdqQOohsflGDirAGRiYlBhNjPo8qrIL1p6hk36S")//キーは自分で取得してください
-    
-    val twitterFactory = new TwitterFactory(cb.build)
-    val tt = getTwitter
-
-    val timeLine = tt.timelines
-    timeLine.getUserTimeline
-  }
-
-  def tweetAnalysis(gsRetweets: ResponseList[twitter4j.Status]) = {
-
-    val tokenizer = Tokenizer.builder.mode(Tokenizer.Mode.NORMAL).build
-    
-    val tokens = for (rl <- gsRetweets) yield {
-        println(rl.getText)
-        tokenizer.tokenize(rl.getText)
+  def generateSongs(twitter : Twitter, count : Int) : List[String] = {
+    val dictionary:List[(String,Int)] = getDictionary(twitter)
+    val fiveCharacters : List[String] = dictionary.filter{
+      u => u match {case (x, y) => y == 5 case _ => false}
+    }.map{
+      u => u match {case (x, y) => x case _ => ""}
     }
+    val sevenCharacters : List[String] = dictionary.filter{
+      u => u match {case (x, y) => y == 7 case _ => false}
+    }.map{
+      u => u match {case (x, y) => x case _ => ""}
+    }
+    List(generateSong(fiveCharacters, sevenCharacters))
+  }
 
-    val sorted = tokens.flatten.filter(x => x.getPartOfSpeech.startsWith("名詞")).groupBy(x => x.getBaseForm).values.toList.sortWith(_.length>_.length)
+  def generateSong(fiveCharacters : List[String], sevenCharacters : List[String]) : String = {
+    scala.util.Random.shuffle(fiveCharacters) 
+    scala.util.Random.shuffle(sevenCharacters)
+    fiveCharacters.last + sevenCharacters.last + fiveCharacters.head
+  }
 
-    sorted.foreach { x =>
-      println(x)
-      x match {
-        case x if (x(0).getBaseForm() == null) =>
-        case x => println("count: " +x.length+" "+x(0).getBaseForm())
+  def getDictionary(twitter : Twitter) : List[(String, Int)] = {
+    tweetsParse(twitter.timelines.getUserTimeline(twitter.getId, new Paging(1, 500)))
+  }
+
+  def tweetsParse(tweets : ResponseList[twitter4j.Status]) : List[(String, Int)]= {
+    val buff = for (tweet <- tweets) yield { tweetAnalysis(tweet.getText) }
+    buff.toList.flatMap(t => t)
+  }
+
+  def tweetAnalysis(tweet : String): List[(String, Int)] = {
+      val tokenizer = Tokenizer.builder.mode(Tokenizer.Mode.NORMAL).build
+      getSyllableList(tokenizer.tokenize(tweet).toArray)
+  }
+
+  def getSyllableList(tokens :  Array[Object]) : List[(String, Int)] ={
+    tokens.flatMap(t => getSyllable(t.asInstanceOf[Token])).toList
+  }
+
+  def getSyllable(token : Token) : List[(String, Int)] = {
+    val str : String = token.getReading
+    val len = {
+      str match {
+        case null => 0
+        case x => x.length
       }
     }
-
+    List((token.getSurfaceForm, len))
   }
-
-
 
 
 

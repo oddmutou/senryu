@@ -1,2 +1,7 @@
-@(message: String)
+@(messages: List[String])
+
+@for( message <- messages ){
+<div>  
 @message
+</div>  
+}
